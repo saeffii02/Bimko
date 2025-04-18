@@ -52,21 +52,26 @@ class _KonsultasiPageState extends State<KonsultasiPage> {
       appBar: AppBar(
         backgroundColor: Colors.red[800],
         elevation: 0,
-        leading: const Icon(Icons.arrow_back),
+        leading: const Icon(Icons.arrow_back, color: Colors.white),
         centerTitle: true,
-        title: const Text("Konsultasi", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text("Konsultasi", 
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          )
+        ),
       ),
       body: Column(
         children: [
           Stack(
             children: [
               Container(
-                height: 300,
+                height: 250,
                 width: double.infinity,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(24),
-                    bottomRight: Radius.circular(24),
+                    bottomLeft: Radius.circular(28),
+                    bottomRight: Radius.circular(28),
                   ),
                   child: Image.asset(
                     'assets/img/gambar konsul.png', 

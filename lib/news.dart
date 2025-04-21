@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyek_3/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,7 +34,10 @@ class NewsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            // Navigasi balik atau bisa diganti sesuai kebutuhan
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
           },
         ),
         backgroundColor: Colors.white,

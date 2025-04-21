@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:proyek_3/home.dart';
 import 'package:proyek_3/konsultasi.dart';
 import 'package:proyek_3/profil.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 
 void main() {
@@ -149,6 +151,19 @@ class ChatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ChatPage(
+              chatRoomId: 'room_1', // nanti bisa kamu ganti dinamis
+              currentUserId: 'uid1', // ganti pakai FirebaseAuth.instance.currentUser!.uid
+              peerName: name,
+              peerColor: color,
+            ),
+          ),
+        );
+      },
       leading: CircleAvatar(
         backgroundColor: color,
       ),
@@ -171,8 +186,33 @@ class ChatTile extends StatelessWidget {
   }
 }
 
-class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
+
+class ChatPage extends StatefulWidget {
+  final String chatRoomId;
+  final String currentUserId;
+  final String peerName;
+  final Color peerColor;
+
+  const ChatPage({
+    super.key,
+    required this.chatRoomId,
+    required this.currentUserId,
+    required this.peerName,
+    required this.peerColor,
+  });
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  final TextEditingController _messageController = TextEditingController();
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,18 +223,23 @@ class ChatPage extends StatelessWidget {
         elevation: 2,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Row(
           children: [
-            const CircleAvatar(
-              backgroundColor: Colors.deepPurple,
+            CircleAvatar(
+              backgroundColor: widget.peerColor,
               radius: 16,
             ),
             const SizedBox(width: 8),
-            const Text(
-              'Hernika Prihatina., S.Psi',
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+            Text(
+              widget.peerName,
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),
@@ -202,33 +247,41 @@ class ChatPage extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 16),
-
-          // Chat bubbles
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: const [
-                MessageBubble(
-                  text: "Halo Bu, saya ingin bertanya.",
-                  isSender: true,
-                ),
-                MessageBubble(
-                  text: "Silakan, ada yang bisa saya bantu?",
-                  isSender: false,
-                ),
-                MessageBubble(
-                  text: "Tentang tugas kemarin bu...",
-                  isSender: true,
-                ),
-                MessageBubble(
-                  text: "Oh ya, kamu bisa kumpulkan besok.",
-                  isSender: false,
-                ),
-              ],
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('chats')
+                  .doc(widget.chatRoomId)
+                  .collection('messages')
+                  .orderBy('timestamp', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Terjadi error: ${snapshot.error}'),
+                  );
+                }
+
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final messages = snapshot.data!.docs;
+
+                return ListView.builder(
+                  reverse: true,
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final msg = messages[index];
+                    return MessageBubble(
+                      text: msg['text'] ?? '',
+                      isSender: msg['senderId'] == widget.currentUserId,
+                    );
+                  },
+                );
+              },
             ),
           ),
-
-          // Chat input
           Container(
             margin: const EdgeInsets.all(12),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -245,17 +298,41 @@ class ChatPage extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(Icons.add_circle, color: Colors.red.shade900),
-                const SizedBox(width: 10),
-                const Expanded(
+                Expanded(
                   child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Message......",
+                    controller: _messageController,
+                    decoration: const InputDecoration(
+                      hintText: 'Ketik pesan...',
                       border: InputBorder.none,
                     ),
                   ),
                 ),
-                Icon(Icons.send, color: Colors.red.shade900),
+                IconButton(
+                  icon: Icon(Icons.send, color: Colors.red.shade900),
+                  onPressed: () async {
+                    final messageText = _messageController.text.trim();
+                    if (messageText.isNotEmpty) {
+                      try {
+                        await FirebaseFirestore.instance
+                            .collection('chats')
+                            .doc(widget.chatRoomId)
+                            .collection('messages')
+                            .add({
+                          'text': messageText,
+                          'senderId': widget.currentUserId,
+                          'timestamp': FieldValue.serverTimestamp(),
+                        });
+
+                        _messageController.clear();
+                      } catch (e) {
+                        debugPrint('❌ Gagal mengirim pesan: $e');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Gagal mengirim pesan.')),
+                        );
+                      }
+                    }
+                  },
+                ),
               ],
             ),
           ),

@@ -35,6 +35,9 @@ dependencies:
   google_fonts: ^6.1.0 
   firebase_auth: ^5.5.2
   firebase_core: ^3.13.0
+  cloud_firestore: ^5.6.6
+  
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -77,6 +80,7 @@ flutter:
   - assets/img/konselor.png
   - assets/img/gambar konsul.png
   - assets/img/artikel.jpg
+  - assets/img/notifikasi_done.png
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

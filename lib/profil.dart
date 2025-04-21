@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:proyek_3/home.dart';
 import 'package:proyek_3/konsultasi.dart';
 import 'package:proyek_3/roomchat.dart';
+import 'package:proyek_3/welcome.dart'; // Pastikan path-nya sesuai
+
+
 
 void main() {
   runApp(const MaterialApp(
@@ -144,17 +147,25 @@ class _ProfilPageState extends State<ProfilPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               ),
               onPressed: () {
-              showDialog(
+                showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
                     title: const Text("Konfirmasi Keluar"),
                     content: const Text("Yakin ingin keluar?"),
                     actions: [
-                      TextButton(onPressed: () => Navigator.pop(context), child: const Text("Batal")),
-                      TextButton(onPressed: () {
-                        // Aksi ketika tombol "Keluar" ditekan  
-                        Navigator.pop(context);
-                      }, child: const Text("Keluar")),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text("Batal"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+                            (route) => false,
+                          );
+                        },
+                        child: const Text("Keluar"),
+                      ),
                     ],
                   ),
                 );

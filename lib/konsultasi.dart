@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyek_3/home.dart';
 import 'package:proyek_3/profil.dart';
 import 'package:proyek_3/roomchat.dart';
+import 'package:proyek_3/form_konsultasi.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -19,143 +20,183 @@ class KonsultasiPage extends StatefulWidget {
 
 class _KonsultasiPageState extends State<KonsultasiPage> {
   int _selectedIndex = 1;
-
-  void _onItemTapped(int index) {
-  if (index == _selectedIndex) return;
-  switch (index) {
-    case 0:
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomePage()));
-      break;
-    case 1:
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => KonsultasiPage()));
-      break;
-    case 2:
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomChatPage()));
-      break;
-    case 3:
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfilPage()));
-      break;
-  }
-}
+  String _selectedCategory = '';
 
   final List<Map<String, dynamic>> categories = [
-    {'icon': Icons.person, 'label': 'Pribadi', 'active': true},
+    {'icon': Icons.person, 'label': 'Pribadi'},
     {'icon': Icons.group, 'label': 'Sosial'},
     {'icon': Icons.bar_chart, 'label': 'Karier'},
     {'icon': Icons.menu_book, 'label': 'Akademik'},
   ];
 
+  void _onItemTapped(int index) {
+    if (index == _selectedIndex) return;
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => HomePage()));
+        break;
+      case 1:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => KonsultasiPage()));
+        break;
+      case 2:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => RoomChatPage()));
+        break;
+      case 3:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => ProfilPage()));
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 239, 234, 234),
+      backgroundColor: const Color(0xFFEFEAEA),
       appBar: AppBar(
         backgroundColor: Colors.red[800],
         elevation: 0,
-        leading: const Icon(Icons.arrow_back),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
+        ),
         centerTitle: true,
-        title: const Text("Konsultasi", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          "Konsultasi",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white, // Ubah warna teks judul
+          ),
+        ),
       ),
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 300,
-                width: double.infinity,
-                child: ClipRRect(
+
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                ClipRRect(
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(24),
                     bottomRight: Radius.circular(24),
                   ),
                   child: Image.asset(
-                    'assets/img/gambar konsul.png', 
+                    'assets/img/gambar konsul.png',
+                    height: 280,
+                    width: double.infinity,
                     fit: BoxFit.cover,
                   ),
                 ),
-              ),
-              const Positioned(
-                bottom: 20,
-                left: 16,
-                right: 16,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Temukan Solusi Bersama\n Guru BK',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 26,
-                        fontFamily: 'Roboto',
-                        shadows: [Shadow(blurRadius: 4, color: Colors.black)],
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      'Tidak perlu menghadapi semuanya sendirian. Mari bicarakan bersama \ndalam sesi konseling—karena setiap masalah pasti ada solusinya!',
-                      style: TextStyle(
-                      color: Colors.white, 
-                      fontSize: 12,
-                      fontFamily: 'Rhodium Libre',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Wrap(
-              spacing: 16,
-              runSpacing: 16,
-              children: categories.map((item) {
-                bool isActive = item['label'] == 'Pribadi';
-                return Container(
-                  width: (MediaQuery.of(context).size.width - 72) / 2,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade400,
-                        blurRadius: 4,
-                        offset: const Offset(2, 2),
-                      )
-                    ],
-                  ),
-                  child: Material(
-                    color: isActive ? Colors.red[800] : Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(12),
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(item['icon'], color: isActive ? Colors.white : Colors.red[800], size: 32),
-                            const SizedBox(height: 8),
-                            Text(
-                              item['label'],
-                              style: TextStyle(
-                                color: isActive ? Colors.white : Colors.red[800],
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
-                          ],
+                const Positioned(
+                  bottom: 20,
+                  left: 16,
+                  right: 16,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Temukan Solusi Bersama\nGuru BK',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26,
+                          fontFamily: 'Roboto',
+                          shadows: [Shadow(blurRadius: 4, color: Colors.black)],
                         ),
                       ),
-                    ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Tidak perlu menghadapi semuanya sendirian. Mari bicarakan bersama \ndalam sesi konseling—karena setiap masalah pasti ada solusinya!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: 'Rhodium Libre',
+                          shadows: [Shadow(blurRadius: 2, color: Colors.black)],
+                        ),
+                      ),
+                    ],
                   ),
-                );
-              }).toList(),
+                ),
+              ],
             ),
-          )
-        ],
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  double itemWidth = (constraints.maxWidth - 16) / 2;
+
+                  return Wrap(
+                    spacing: 16,
+                    runSpacing: 16,
+                    children: categories.map((item) {
+                      bool isActive = _selectedCategory == item['label'];
+
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedCategory = item['label'];
+                          });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BuatKonsultasiPage(
+                                kategori: item['label'],
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: itemWidth,
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color: isActive ? Colors.red[800] : Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                blurRadius: 6,
+                                offset: const Offset(2, 4),
+                              )
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                item['icon'],
+                                color: isActive ? Colors.white : Colors.red[800],
+                                size: 32,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                item['label'],
+                                style: TextStyle(
+                                  color:
+                                      isActive ? Colors.white : Colors.red[800],
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: const Color.fromARGB(255, 185, 29, 18),
@@ -165,7 +206,8 @@ class _KonsultasiPageState extends State<KonsultasiPage> {
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Konsultasi'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_today), label: 'Konsultasi'),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Room Chat'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
         ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:proyek_3/konsultasi.dart';
+import 'package:proyek_3/news.dart';
+import 'package:proyek_3/pengaduan.dart';
 import 'package:proyek_3/profil.dart';
 import 'package:proyek_3/roomchat.dart';
 
@@ -169,28 +171,59 @@ class HomePageState extends State<HomePage> {
 
 
   Widget _buildMenuGrid() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: GridView(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 1.7,
-        ),
-        children: [
-          _MenuCard(imagePath: "assets/img/pengaduan.png", label: "Pengaduan", description: "Laporkan keluhan atau masalah."),
-          _MenuCard(imagePath: "assets/img/calendar.png", label: "Jadwal Konseling", description: "Lihat jadwal konseling."),
-          _MenuCard(imagePath: "assets/img/konsultasi.png", label: "Konsultasi", description: "Ajukan sesi konseling di sini."),
-          _MenuCard(imagePath: "assets/img/assessment.png", label: "Assessment", description: "Lakukan penilaian diri."),
-          _MenuCard(imagePath: "assets/img/news.png", label: "News", description: "Berita terbaru seputar sekolah."),
-          _MenuCard(imagePath: "assets/img/alumni.png", label: "Track Alumni", description: "Lacak perkembangan alumni."),
-        ],
+  return Padding(
+    padding: const EdgeInsets.all(16),
+    child: GridView(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 1.7,
       ),
-    );
-  }
+      children: [
+        _MenuCard(
+          imagePath: "assets/img/pengaduan.png",
+          label: "Pengaduan",
+          description: "Laporkan keluhan atau masalah.",
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BuatPengaduanPage())),
+        ),
+        _MenuCard(
+          imagePath: "assets/img/calendar.png",
+          label: "Jadwal Konseling",
+          description: "Lihat jadwal konseling.",
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HomePage())),
+        ),
+        _MenuCard(
+          imagePath: "assets/img/konsultasi.png",
+          label: "Konsultasi",
+          description: "Ajukan sesi konseling di sini.",
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const KonsultasiPage())),
+        ),
+        _MenuCard(
+          imagePath: "assets/img/assessment.png",
+          label: "Assessment",
+          description: "Lakukan penilaian diri.",
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HomePage())),
+        ),
+        _MenuCard(
+          imagePath: "assets/img/news.png",
+          label: "News",
+          description: "Berita terbaru seputar sekolah.",
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NewsPage())),
+        ),
+        _MenuCard(
+          imagePath: "assets/img/alumni.png",
+          label: "Track Alumni",
+          description: "Lacak perkembangan alumni.",
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HomePage())),
+        ),
+      ],
+    ),
+  );
+}
+
 
   Widget _buildUpcomingSchedule() {
   return Padding(
@@ -293,18 +326,20 @@ class _MenuCard extends StatelessWidget {
   final String imagePath;
   final String label;
   final String description;
+  final VoidCallback onTap;
 
   const _MenuCard({
     required this.imagePath,
     required this.label,
     required this.description,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
+    return GestureDetector(
+      onTap: onTap,
       child: Card(
         elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -328,7 +363,7 @@ class _MenuCard extends StatelessWidget {
                   color: Colors.black54,
                 ),
               ),
-              const SizedBox(height: 12), // Jarak antara deskripsi dan ikon
+              const SizedBox(height: 12),
               Image.asset(
                 imagePath,
                 width: 50,
@@ -342,6 +377,7 @@ class _MenuCard extends StatelessWidget {
     );
   }
 }
+
 
 
 

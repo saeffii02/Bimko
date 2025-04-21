@@ -84,8 +84,8 @@ class _KonsultasiPageState extends State<KonsultasiPage> {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(24),
-                    bottomRight: Radius.circular(24),
+                    bottomLeft: Radius.circular(28),
+                    bottomRight: Radius.circular(28),
                   ),
                   child: Image.asset(
                     'assets/img/gambar konsul.png',

@@ -93,6 +93,8 @@ flutter:
   - assets/img/news1.png
   - assets/img/news2.png
   - assets/img/news3.png
+  - assets/img/students.jpg
+  - assets/img/teacher.jpg
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

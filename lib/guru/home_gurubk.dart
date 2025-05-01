@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:proyek_3/guru/pengaduan_guru.dart';
+ 
 import 'package:proyek_3/konsultasi.dart';
 import 'package:proyek_3/profil.dart';
 import 'package:proyek_3/roomchat.dart';
@@ -32,22 +34,26 @@ class HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-  if (index == _selectedIndex) return;
-  switch (index) {
-    case 0:
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomePage()));
-      break;
-    case 1:
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => KonsultasiPage()));
-      break;
-    case 2:
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomChatPage()));
-      break;
-    case 3:
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfilPage()));
-      break;
+    if (index == _selectedIndex) return;
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const HomePage()));
+        break;
+      case 1:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const KonsultasiPage()));
+        break;
+      case 2:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const RoomChatPage()));
+        break;
+      case 3:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => const ProfilPage()));
+        break;
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +88,7 @@ class HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   _buildMenuGrid(),
-                  const SizedBox(height: 75), // 👈 Tambahkan jarak di sini
+                  const SizedBox(height: 75),
                   const SizedBox(height: 90),
                   _buildStatistics(),
                   const SizedBox(height: 24),
@@ -96,75 +102,67 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildHeader() {
-  return Container(
-    width: double.infinity,
-    decoration: const BoxDecoration(
-    ),
-    child: Stack(
-      children: [
-        // Gambar dekoratif di kanan bawah
-        Positioned(
-          left: 360,
-          top: 2,
-          child: Image.asset(
-            "assets/img/icon_header.png", // Ganti dengan path gambar buku kamu
-            width: 300,
-            height: 390,
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(),
+      child: Stack(
+        children: [
+          Positioned(
+            left: 360,
+            top: 2,
+            child: Image.asset(
+              "assets/img/icon_header.png",
+              width: 300,
+              height: 390,
+            ),
           ),
-        ),
-
-        // Icon notifikasi di kanan atas
-        Positioned(
-          top: 40,
-          right: 20,
-          child: Icon(
-            Icons.notifications,
-            color: Colors.white70,
-            size: 28,
+          const Positioned(
+            top: 40,
+            right: 20,
+            child: Icon(
+              Icons.notifications,
+              color: Colors.white70,
+              size: 28,
+            ),
           ),
-        ),
-
-        // Teks dan logo BIMKO
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                "BIMKO",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'ProtestGuerrilla', // pastikan font sudah ada
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  "BIMKO",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'ProtestGuerrilla',
+                  ),
                 ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                "Halo, SMANSASI!",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontFamily: 'Mukta-Medium',
+                SizedBox(height: 8),
+                Text(
+                  "Halo, SMANSASI!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontFamily: 'Mukta-Medium',
+                  ),
                 ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                "Pantau jadwal konseling, pengaduan, \ndan berita terbaru di sini",
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 13,
+                SizedBox(height: 8),
+                Text(
+                  "Pantau jadwal konseling, pengaduan, \ndan berita terbaru di sini",
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
-
-
+        ],
+      ),
+    );
+  }
 
   Widget _buildMenuGrid() {
     return Padding(
@@ -179,130 +177,151 @@ class HomePageState extends State<HomePage> {
           childAspectRatio: 1.7,
         ),
         children: [
-          _MenuCard(imagePath: "assets/img/pengaduan.png", label: "Pengaduan", description: "Cek Pengaduan di sini"),
-          _MenuCard(imagePath: "assets/img/calendar.png", label: "Jadwal Konseling", description: "Cek Konseling Hari ini"),
-          _MenuCard(imagePath: "assets/img/konsultasi.png", label: "Konsultasi", description: "Cek Konsultasi Baru"),
-          _MenuCard(imagePath: "assets/img/assessment.png", label: "Assessment", description: "Evaluasi kepribadian & IQ"),
-          _MenuCard(imagePath: "assets/img/news.png", label: "News", description: "Smansasi News"),
-          _MenuCard(imagePath: "assets/img/alumni.png", label: "Track Alumni", description: "Lacak perkembangan alumni"),
+          _MenuCard(
+            imagePath: "assets/img/pengaduan.png",
+            label: "Pengaduan",
+            description: "Laporkan keluhan atau masalah.",
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const PengaduanGuruPage()),
+            ),
+          ),
+          _MenuCard(
+            imagePath: "assets/img/calendar.png",
+            label: "Jadwal Konseling",
+            description: "Cek Konseling Hari ini",
+            onTap: () {}, // Tambahkan fungsi jika perlu
+          ),
+          _MenuCard(
+            imagePath: "assets/img/konsultasi.png",
+            label: "Konsultasi",
+            description: "Cek Konsultasi Baru",
+            onTap: () {},
+          ),
+          _MenuCard(
+            imagePath: "assets/img/assessment.png",
+            label: "Assessment",
+            description: "Evaluasi kepribadian & IQ",
+            onTap: () {},
+          ),
+          _MenuCard(
+            imagePath: "assets/img/news.png",
+            label: "News",
+            description: "Smansasi News",
+            onTap: () {},
+          ),
+          _MenuCard(
+            imagePath: "assets/img/alumni.png",
+            label: "Track Alumni",
+            description: "Lacak perkembangan alumni",
+            onTap: () {},
+          ),
         ],
       ),
     );
   }
 
-
-
-
   Widget _buildStatistics() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Statistik Konseling",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: 150,
-          child: LineChart(
-            LineChartData(
-              gridData: FlGridData(show: false),
-              titlesData: FlTitlesData(show: false),
-              borderData: FlBorderData(show: false),
-              lineBarsData: [
-                LineChartBarData(
-                  spots: [
-                    FlSpot(0, 1),
-                    FlSpot(1, 3),
-                    FlSpot(2, 2),
-                    FlSpot(3, 5),
-                    FlSpot(4, 4),
-                  ],
-                  isCurved: true,
-                  color: Colors.blue,
-                  barWidth: 4,
-                  belowBarData: BarAreaData(show: false),
-                  dotData: FlDotData(show: true),
-                ),
-              ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Statistik Konseling",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
             ),
           ),
-        ),
-      ],
-    ),
-  );
-}
-
- 
-
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 150,
+            child: LineChart(
+              LineChartData(
+                gridData: FlGridData(show: false),
+                titlesData: FlTitlesData(show: false),
+                borderData: FlBorderData(show: false),
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: [
+                      FlSpot(0, 1),
+                      FlSpot(1, 3),
+                      FlSpot(2, 2),
+                      FlSpot(3, 5),
+                      FlSpot(4, 4),
+                    ],
+                    isCurved: true,
+                    color: Colors.blue,
+                    barWidth: 4,
+                    belowBarData: BarAreaData(show: false),
+                    dotData: FlDotData(show: true),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _MenuCard extends StatelessWidget {
   final String imagePath;
   final String label;
   final String description;
+  final VoidCallback? onTap;
 
-  const _MenuCard({
-    required this.imagePath,
-    required this.label,
-    required this.description,
-    Key? key,
-  }) : super(key: key);
+ const _MenuCard({
+  required this.imagePath,
+  required this.label,
+  required this.description,
+  this.onTap,
+});
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: Card(
-        elevation: 8,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: onTap,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Card(
+          elevation: 8,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                description,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.black54,
+                const SizedBox(height: 4),
+                Text(
+                  description,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.black54,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12), // Jarak antara deskripsi dan ikon
-              Image.asset(
-                imagePath,
-                width: 50,
-                height: 50,
-                fit: BoxFit.contain,
-              ),
-            ],
+                const SizedBox(height: 12),
+                Image.asset(
+                  imagePath,
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.contain,
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-

@@ -36,8 +36,9 @@ class _BuatPengaduanPageState extends State<BuatPengaduanPage> {
         'timestamp': FieldValue.serverTimestamp(),
         'userId': user.uid,
         'userEmail': user.email,
-        'displayName': user.displayName ?? '',
+        'displayName': user.displayName ?? user.email ?? 'Anonim',
       });
+
 
       if (mounted) {
         Navigator.pushReplacement(
